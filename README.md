@@ -1,6 +1,6 @@
 # SolatApp
 
-Prayer schedule for muslim (Android App)
+Prayer schedule for muslims (Android App)
 
 Data fetched from [jadwalsholat.org](https://jadwalsholat.org)
 
