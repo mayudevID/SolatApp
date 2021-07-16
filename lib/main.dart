@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
       maghribTime = data[1][7];
       isyaTime = data[1][8];
       String citySet = preferences.getString('city') ?? "Jakarta Pusat";
-      city = 'Kota/Kab $citySet';
+      city = 'Wilayah $citySet';
     });
   }
 
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
       ashrTime = data[1][6];
       maghribTime = data[1][7];
       isyaTime = data[1][8];
-      city = 'Kota/Kab ${data[2]}';
+      city = 'Wilayah ${data[2]}';
       preferences.setString('city', city);
     });
   }

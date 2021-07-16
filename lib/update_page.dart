@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:solat_app/main.dart';
 import 'package:solat_app/update_set_data.dart';
@@ -35,7 +36,13 @@ class _UpdatePageState extends State<UpdatePage> {
   static String dropDownValue = "Ambarawa";
   List<dynamic> listCity = [];
 
+  void getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    cityNow = preferences.getString('city') ?? "Jakarta Pusat";
+  }
+
   Future<void> startUpdate() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     final directory = await getApplicationDocumentsDirectory();
     File file = new File('${directory.path}/data_kota.cfg');
 
@@ -53,6 +60,7 @@ class _UpdatePageState extends State<UpdatePage> {
         if (city == dropDownValue) {
           id = dataAndNum.split(":")[0];
           cityFix = city;
+          preferences.setString('city', cityFix);
         }
       });
     }
@@ -97,6 +105,7 @@ class _UpdatePageState extends State<UpdatePage> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+    getPref();
 
     widget.stream.listen((data) {
       setListCityFirst(data);
@@ -144,11 +153,6 @@ class _UpdatePageState extends State<UpdatePage> {
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: DropdownButton<dynamic>(
                     value: dropDownValue,
-                    //icon: const Icon(Icons.arrow_downward),
-                    //underline: Container(
-                    //  height: 5,
-                    //  color: Colors.deepPurpleAccent,
-                    //),
                     items: listCity.map<DropdownMenuItem>((var value) {
                       return DropdownMenuItem(
                         value: value,
