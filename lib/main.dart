@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   String param3 = '-';
   String city = '-';
 
-  String tanggal = DateFormat('EEEE, d MMM, yyyy').format(DateTime.now());
+  String tanggal = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
 
   Future<void> getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
       maghribTime = data[1][7];
       isyaTime = data[1][8];
       city = 'Wilayah ${data[2]}';
-      preferences.setString('city', city);
+      preferences.setString('city', data[2]);
     });
   }
 

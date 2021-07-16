@@ -38,7 +38,7 @@ class _UpdatePageState extends State<UpdatePage> {
 
   void getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    cityNow = preferences.getString('city') ?? "Jakarta Pusat";
+    cityNow = preferences.getString('city2') ?? "Jakarta Pusat";
   }
 
   Future<void> startUpdate() async {
@@ -60,7 +60,7 @@ class _UpdatePageState extends State<UpdatePage> {
         if (city == dropDownValue) {
           id = dataAndNum.split(":")[0];
           cityFix = city;
-          preferences.setString('city', cityFix);
+          preferences.setString('city2', cityFix);
         }
       });
     }
