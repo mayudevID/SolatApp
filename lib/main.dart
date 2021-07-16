@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'update_page.dart';
 import 'update_set_data.dart';
 
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   String tanggal = DateFormat('EEEE, d MMM, yyyy').format(DateTime.now());
 
   Future<void> getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     final directory = await getApplicationDocumentsDirectory();
     SetData setData = new SetData(directory.path);
 
@@ -71,7 +73,8 @@ class _HomePageState extends State<HomePage> {
       ashrTime = data[1][6];
       maghribTime = data[1][7];
       isyaTime = data[1][8];
-      city = 'Kota ${data[0][0].split(" ")[2]}';
+      String citySet = preferences.getString('city') ?? "Jakarta Pusat";
+      city = 'Kota/Kab $citySet';
     });
   }
 
@@ -85,7 +88,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void updateCity(List data) {
+  void updateCity(List data) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       param1 = data[0][0];
       param2 = data[0][1];
@@ -98,7 +102,8 @@ class _HomePageState extends State<HomePage> {
       ashrTime = data[1][6];
       maghribTime = data[1][7];
       isyaTime = data[1][8];
-      city = 'Kota ${data[2]}';
+      city = 'Kota/Kab ${data[2]}';
+      preferences.setString('city', city);
     });
   }
 
