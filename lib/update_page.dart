@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:solat_app/main.dart';
@@ -33,12 +34,14 @@ class UpdatePage extends StatefulWidget {
 
 class _UpdatePageState extends State<UpdatePage> {
   static String cityNow = "-";
+  static String lastUpdate = "";
   static String dropDownValue = "Ambarawa";
   List<dynamic> listCity = [];
 
   void getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     cityNow = preferences.getString('city2') ?? "Jakarta Pusat";
+    lastUpdate = preferences.getString('lastup') ?? "-----";
   }
 
   Future<void> startUpdate() async {
@@ -81,10 +84,6 @@ class _UpdatePageState extends State<UpdatePage> {
         List scriptUpdate = [data, schedule, cityFix];
         streamController.add(scriptUpdate);
 
-        setState(() {
-          cityNow = cityFix;
-        });
-
         Fluttertoast.showToast(
           msg: 'Lokasi telah dirubah! ($cityFix)',
           toastLength: Toast.LENGTH_LONG,
@@ -98,6 +97,15 @@ class _UpdatePageState extends State<UpdatePage> {
         gravity: ToastGravity.BOTTOM,
       );
     }
+
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat('dd-MM-yyyy hh:mm:ss');
+    lastUpdate = formatter.format(now);
+    preferences.setString('lastup', lastUpdate);
+
+    setState(() {
+      cityNow = cityFix;
+    });
   }
 
   @override
@@ -206,6 +214,12 @@ class _UpdatePageState extends State<UpdatePage> {
                   onPressed: () => startUpdate(),
                 ),
               ),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Text("Last Update: " + lastUpdate),
             ),
           ),
           Padding(
